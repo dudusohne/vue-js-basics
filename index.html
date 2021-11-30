@@ -21,19 +21,20 @@
       [v-cloak] {
         display: none;
       }
-      
+      input {
+        margin: 10px;
+        display: block;
+      }
     </style>
   </head>
   <body>
     <div id="app" v-cloak>
-      {{message}}
-      <input @keyup.enter="greet(message + '!!!!!')" v-model="message" />
+      <login-form />
 
       <hr />
 
       <button @click.prevent.stop="toggleBox">toggle box</button>
       <div v-if="isVisible" class="box"></div>
-      
     </div>
 
     <script src="https://unpkg.com/vue@next"></script>
@@ -46,15 +47,39 @@
           };
         },
         methods: {
-            toggleBox: function () {
-                this.isVisible = !this.isVisible;
-            },
-            greet(message) {
-                console.log(this.message)
-                // this.message = "Hello " + this.message;
-            }
-        }
+          toggleBox: function () {
+            this.isVisible = !this.isVisible;
+          },
+          greet(message) {
+            console.log(this.message);
+            // this.message = "Hello " + this.message;
+          },
+        },
       });
+
+      app.component("login-form", {
+        template: `
+          <form @submit.prevent="handleSubmit">
+            <h1>{{ title }}</h1>
+            <input type="email" v-model="email" />
+            <input type="password" v-model="password" />
+            <button>Log in</button>
+          </form>
+        `,
+        data() {
+          return {
+            title: "Login Form",
+            email: '',
+            password: ''
+          };
+        },
+        methods: {
+          handleSubmit() {
+            console.log(this.email, this.password);
+          },
+        },
+      });
+
       app.mount("#app");
     </script>
   </body>
